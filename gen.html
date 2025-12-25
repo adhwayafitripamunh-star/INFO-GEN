@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Generations & Starters</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(to right, #ff6b6b, #4ecdc4, #45b7d1);
+            border-radius: 2px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-all {
+            background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
+
+        .btn-fire {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+        }
+
+        .btn-water {
+            background: linear-gradient(to right, #2193b0, #6dd5ed);
+            color: white;
+        }
+
+        .btn-grass {
+            background: linear-gradient(to right, #56ab2f, #a8e063);
+            color: white;
+        }
+
+        .generations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .generation-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .generation-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gen-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffd166;
+            margin-bottom: 5px;
+        }
+
+        .region {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .year {
+            font-size: 1rem;
+            opacity: 0.8;
+            color: #4ecdc4;
+        }
+
+        .starters-container {
+            padding: 20px;
+        }
+
+        .starter {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .starter:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .starter.fire {
+            border-left: 5px solid #ff6b6b;
+        }
+
+        .starter.water {
+            border-left: 5px solid #4ecdc4;
+        }
+
+        .starter.grass {
+            border-left: 5px solid #a8e063;
+        }
+
+        .starter-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .fire .starter-icon {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        .water .starter-icon {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ecdc4;
+        }
+
+        .grass .starter-icon {
+            background: rgba(168, 224, 99, 0.2);
+            color: #a8e063;
+        }
+
+        .starter-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .starter-type {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .type-display {
+            display: none;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .type-display h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ffd166;
+        }
+
+        .type-starters {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .type-starter-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .type-starter-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .generations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 250px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-dragon"></i> Pokemon Generations</h1>
+            <p class="subtitle">Starter Pokemon dari setiap generasi</p>
+        </header>
+        
+        <div class="controls">
+            <button class="btn btn-all" onclick="showAll()">
+                <i class="fas fa-globe"></i> Tampilkan Semua Generasi
+            </button>
+            <button class="btn btn-fire" onclick="showType('fire')">
+                <i class="fas fa-fire"></i> Fire Starters
+            </button>
+            <button class="btn btn-water" onclick="showType('water')">
+                <i class="fas fa-tint"></i> Water Starters
+            </button>
+            <button class="btn btn-grass" onclick="showType('grass')">
+                <i class="fas fa-leaf"></i> Grass Starters
+            </button>
+        </div>
+        
+        <div id="typeDisplay" class="type-display"></div>
+        
+        <div id="generationsContainer" class="generations-grid">
+            <!-- Generasi akan dimuat oleh JavaScript -->
+        </div>
+        
+        <footer>
+            <div class="logo">POKÉDEX</div>
+            <p>Informasi Starter Pokemon dari Generasi 1 hingga 9</p>
+            <p>© 2023 Pokemon Generations Info | Hanya menampilkan starter Pokemon</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data generasi dan starter Pokemon
+        const generations = [
+            {
+                id: 1,
+                region: "Kanto",
+                year: 1996,
+                starters: [
+                    { name: "Charmander", type: "fire" },
+                    { name: "Squirtle", type: "water" },
+                    { name: "Bulbasaur", type: "grass" }
+                ]
+            },
+            {
+                id: 2,
+                region: "Johto",
+                year: 1999,
+                starters: [
+                    { name: "Cyndaquil", type: "fire" },
+                    { name: "Totodile", type: "water" },
+                    { name: "Chikorita", type: "grass" }
+                ]
+            },
+            {
+                id: 3,
+                region: "Hoenn",
+                year: 2002,
+                starters: [
+                    { name: "Torchic", type: "fire" },
+                    { name: "Mudkip", type: "water" },
+                    { name: "Treecko", type: "grass" }
+                ]
+            },
+            {
+                id: 4,
+                region: "Sinnoh",
+                year: 2006,
+                starters: [
+                    { name: "Chimchar", type: "fire" },
+                    { name: "Piplup", type: "water" },
+                    { name: "Turtwig", type: "grass" }
+                ]
+            },
+            {
+                id: 5,
+                region: "Unova",
+                year: 2010,
+                starters: [
+                    { name: "Tepig", type: "fire" },
+                    { name: "Oshawott", type: "water" },
+                    { name: "Snivy", type: "grass" }
+                ]
+            },
+            {
+                id: 6,
+                region: "Kalos",
+                year: 2013,
+                starters: [
+                    { name: "Fennekin", type: "fire" },
+                    { name: "Froakie", type: "water" },
+                    { name: "Chespin", type: "grass" }
+                ]
+            },
+            {
+                id: 7,
+                region: "Alola",
+                year: 2016,
+                starters: [
+                    { name: "Litten", type: "fire" },
+                    { name: "Popplio", type: "water" },
+                    { name: "Rowlet", type: "grass" }
+                ]
+            },
+            {
+                id: 8,
+                region: "Galar",
+                year: 2019,
+                starters: [
+                    { name: "Scorbunny", type: "fire" },
+                    { name: "Sobble", type: "water" },
+                    { name: "Grookey", type: "grass" }
+                ]
+            },
+            {
+                id: 9,
+                region: "Paldea",
+                year: 2022,
+                starters: [
+                    { name: "Fuecoco", type: "fire" },
+                    { name: "Quaxly", type: "water" },
+                    { name: "Sprigatito", type: "grass" }
+                ]
+            }
+        ];
+
+        // Fungsi untuk menampilkan semua generasi
+        function showAll() {
+            const container = document.getElementById('generationsContainer');
+            const typeDisplay = document.getElementById('typeDisplay');
+            
+            // Sembunyikan tampilan tipe spesifik
+            typeDisplay.style.display = 'none';
+            
+            // Kosongkan container
+            container.innerHTML = '';
+            
+            // Tampilkan semua kartu generasi
+            generations.forEach(gen => {
+                const card = createGenerationCard(gen);
+                container.appendChild(card);
+            });
+        }
+
+        // Fungsi untuk menampilkan starter berdasarkan tipe
+        function showType(type) {
+            const container = document.getElementById('generationsContainer');
+            const typeDisplay = document.getElementById('typeDisplay');
+            
+            // Sembunyikan container generasi
+            container.style.display = 'none';
+            
+            // Tampilkan container tipe
+            typeDisplay.style.display = 'block';
+            
+            // Tentukan informasi tipe
+            let typeName, typeIcon, typeColor;
+            
+            switch(type) {
+                case 'fire':
+                    typeName = 'Fire Starters';
+                    typeIcon = 'fas fa-fire';
+                    typeColor = '#ff6b6b';
+                    break;
+                case 'water':
+                    typeName = 'Water Starters';
+                    typeIcon = 'fas fa-tint';
+                    typeColor = '#4ecdc4';
+                    break;
+                case 'grass':
+                    typeName = 'Grass Starters';
+                    typeIcon = 'fas fa-leaf';
+                    typeColor = '#a8e063';
+                    break;
+            }
+            
+            // Buat HTML untuk tampilan tipe
+            let html = `
+                <h2><i class="${typeIcon}"></i> ${typeName}</h2>
+                <div class="type-starters">
+            `;
+            
+            // Tambahkan starter dari setiap generasi
+            generations.forEach(gen => {
+                const starter = gen.starters.find(s => s.type === type);
+                if (starter) {
+                    html += `
+                        <div class="type-starter-card">
+                            <h3>${starter.name}</h3>
+                            <p><strong>Generasi ${gen.id}:</strong> ${gen.region} (${gen.year})</p>
+                            <p style="color: ${typeColor}; margin-top: 10px;">
+                                <i class="${typeIcon}"></i> ${type.charAt(0).toUpperCase() + type.slice(1)} Type
+                            </p>
+                        </div>
+                    `;
+                }
+            });
+            
+            html += `</div>`;
+            
+            typeDisplay.innerHTML = html;
+            
+            // Tambahkan tombol kembali
+            const backButton = document.createElement('button');
+            backButton.className = 'btn btn-all';
+            backButton.style.marginTop = '20px';
+            backButton.innerHTML = '<i class="fas fa-arrow-left"></i> Kembali ke Semua Generasi';
+            backButton.onclick = function() {
+                container.style.display = 'grid';
+                typeDisplay.style.display = 'none';
+            };
+            
+            typeDisplay.appendChild(backButton);
+        }
+
+        // Fungsi untuk membuat kartu generasi
+        function createGenerationCard(gen) {
+            const card = document.createElement('div');
+            card.className = 'generation-card';
+            
+            let startersHTML = '';
+            
+            // Tambahkan setiap starter
+            gen.starters.forEach(starter => {
+                let typeIcon;
+                let typeText;
+                
+                switch(starter.type) {
+                    case 'fire':
+                        typeIcon = 'fas fa-fire';
+                        typeText = 'Fire Type';
+                        break;
+                    case 'water':
+                        typeIcon = 'fas fa-tint';
+                        typeText = 'Water Type';
+                        break;
+                    case 'grass':
+                        typeIcon = 'fas fa-leaf';
+                        typeText = 'Grass Type';
+                        break;
+                }
+                
+                startersHTML += `
+                    <div class="starter ${starter.type}">
+                        <div class="starter-icon">
+                            <i class="${typeIcon}"></i>
+                        </div>
+                        <div class="starter-info">
+                            <h3>${starter.name}</h3>
+                            <p class="starter-type">${typeText}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="gen-number">Generasi ${gen.id}</div>
+                    <div class="region">${gen.region}</div>
+                    <div class="year">${gen.year}</div>
+                </div>
+                <div class="starters-container">
+                    ${startersHTML}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Tampilkan semua generasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', showAll);
+    </script>
+</body>
+</html>
